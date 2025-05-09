@@ -20,24 +20,24 @@ export default function LoginPage() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md space-y-6 text-center">
         {/* Título principal */}
-        <h1 className="text-3xl font-bold text-primary md:text-4xl">Sistema de Gestión de Conductores</h1>
+        <h1 className="text-5xl font-bold text-primary md:text-4xl">Sistema de Gestión de Conductores</h1>
 
         {/* Subtítulo */}
         <p className="text-gray-600">Inicia sesión para acceder al sistema</p>
 
         {/* Cuadro de inicio de sesión */}
-        <div className="rounded-lg bg-white p-8 shadow-md">
+        <div className="rounded-3xl bg-white p-8 shadow-2xl">
           {/* Título del formulario */}
-          <div className="mb-6 text-center">
+          <div className="mb-6 flex flex-col items-start">
             <h2 className="text-2xl font-bold text-gray-800">Iniciar sesión</h2>
             <p className="mt-2 text-sm text-gray-600">Selecciona tu rol e ingresa tus credenciales</p>
           </div>
 
           {/* Selector de roles */}
-          <div className="mb-6 grid grid-cols-2 gap-2 rounded-md bg-gray-100 p-1">
+          <div className="mb-6 grid grid-cols-2 gap-2 rounded-md bg-secondary p-1">
             <button
               className={`rounded-md py-2 text-sm font-medium transition-colors ${
-                selectedRole === "admin" ? "bg-primary text-white" : "bg-transparent text-gray-600 hover:bg-gray-200"
+                selectedRole === "admin" ? "bg-white text-black" : "bg-transparent text-gray-700 hover:bg-gray-200"
               }`}
               onClick={() => setSelectedRole("admin")}
               type="button"
@@ -46,7 +46,7 @@ export default function LoginPage() {
             </button>
             <button
               className={`rounded-md py-2 text-sm font-medium transition-colors ${
-                selectedRole === "driver" ? "bg-primary text-white" : "bg-transparent text-gray-600 hover:bg-gray-200"
+                selectedRole === "driver" ? "bg-white text-black" : "bg-transparent text-gray-700 hover:bg-gray-200"
               }`}
               onClick={() => setSelectedRole("driver")}
               type="button"
@@ -81,7 +81,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <Button type="submit" className="mt-6 w-full bg-primary py-2 text-white hover:bg-blue-700">
+            <Button type="submit" className="mt-6 w-1/3 bg-primary py-2 text-white hover:bg-blue-700">
               Iniciar sesión
             </Button>
           </form>
