@@ -9,11 +9,47 @@ import { InboxIcon as EnvelopeIcon, LockOpenIcon as LockClosedIcon } from "lucid
 
 export default function LoginPage() {
   const [selectedRole, setSelectedRole] = useState("admin")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Aquí iría la lógica de autenticación
-    console.log("Iniciando sesión...")
+
+    console.log("selectedRole", selectedRole);
+    console.log("email", email);
+    console.log("password", password); 
+  
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          role: selectedRole,       
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Credenciales incorrectas");
+      }
+
+      const data = await response.json();
+
+      // Guardar token, redirigir, etc.
+      localStorage.setItem("token", data.token);
+      alert("Inicio de sesión exitoso");
+      // Aquí puedes redirigir al dashboard según el rol
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Error desconocido");
+      }
+    }
   }
 
   return (
@@ -65,7 +101,7 @@ export default function LoginPage() {
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <EnvelopeIcon className="h-5 w-5 text-gray-400" />
                 </div>
-                <Input id="email" type="email" placeholder="Ingresa tu usuario" className="pl-10" required />
+                <Input id="email" type="email" placeholder="Ingresa tu usuario" className="pl-10" required   value={email} onChange={(e) => setEmail(e.target.value)}/>
               </div>
             </div>
 
@@ -77,13 +113,14 @@ export default function LoginPage() {
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <LockClosedIcon className="h-5 w-5 text-gray-400" />
                 </div>
-                <Input id="password" type="password" placeholder="Ingresa tu Contraseña" className="pl-10" required />
+                <Input id="password" type="password" placeholder="Ingresa tu Contraseña" className="pl-10" required value={password}onChange={(e) => setPassword(e.target.value)}/>
               </div>
             </div>
 
             <Button type="submit" className="mt-6 w-1/3 bg-primary py-2 text-white hover:bg-blue-700">
               Iniciar sesión
             </Button>
+            {error && <p className="text-red-600 text-sm">{error}</p>}
           </form>
         </div>
       </div>
