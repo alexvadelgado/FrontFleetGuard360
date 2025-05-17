@@ -1,10 +1,10 @@
 import React from "react";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, Key } from "lucide-react"; // Importa el icono Key
 
 interface InputFieldProps {
   type: string;
   placeholder: string;
-  icon: "email" | "password";
+  icon: "email" | "password" | "key"; // Añade "key" a los tipos posibles
   id: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -21,7 +21,13 @@ const InputField = ({
   return (
     <div className="relative mb-4">
       <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-        {icon === "email" ? <Mail size={18} /> : <Lock size={18} />}
+        {icon === "email" ? (
+          <Mail size={18} />
+        ) : icon === "password" ? (
+          <Lock size={18} />
+        ) : (
+          <Key size={18} /> // Renderiza el icono Key si icon es "key"
+        )}
       </div>
       <input
         type={type}

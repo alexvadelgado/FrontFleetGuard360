@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 
-const RoleSelector = () => {
-  const [selectedRole, setSelectedRole] = useState<"admin" | "driver">("admin");
+interface RoleSelectorProps {
+  selectedRole: "admin" | "driver";
+  onChange: (role: "admin" | "driver") => void;
+}
 
+const RoleSelector: React.FC<RoleSelectorProps> = ({ selectedRole, onChange }) => {
   return (
     <div className="mb-6">
-      <div className="flex items-center justify-center rounded-lg bg-gray-300 p-1">
+      <div className="flex items-center justify-center rounded-lg bg-secondary p-1">
         <button
-          onClick={() => setSelectedRole("admin")}
+          type="button"
+          onClick={() => onChange("admin")}
           className={`font-bold flex-1 rounded-md py-2 px-4 text-center transition-all ${
             selectedRole === "admin"
               ? "bg-white text-black shadow-sm"
@@ -17,7 +21,8 @@ const RoleSelector = () => {
           Administrador
         </button>
         <button
-          onClick={() => setSelectedRole("driver")}
+          type="button"
+          onClick={() => onChange("driver")}
           className={`font-bold flex-1 rounded-md py-2 px-4 text-center transition-all ${
             selectedRole === "driver"
               ? "bg-white text-black shadow-sm"
