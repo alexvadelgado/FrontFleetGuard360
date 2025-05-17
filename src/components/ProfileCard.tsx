@@ -47,7 +47,17 @@ const ProfileCard = ({ driver }: ProfileCardProps) => {
          {/* Información del perfil */}
         <div className="flex flex-row justify-around gap-x-6 gap-y-1">
           <div>
-              <ProfileItem label="ID" value={driver.id} />
+              <>
+              {/* Solo visible en pantallas pequeñas */}
+              <div className="block lg:hidden">
+                <ProfileItem label="ID" value={driver.id} />
+              </div>
+
+              {/* Solo visible en pantallas grandes */}
+              <div className="hidden lg:block">
+                <ProfileItem label="Identificación" value={driver.id} />
+              </div>
+              </>
               <ProfileItem label="Fecha de nacimiento" value={driver.birthDate} />
               <ProfileItem label="Teléfono" value={driver.phone} />
           </div>

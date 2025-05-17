@@ -18,18 +18,24 @@ export default function Header({ userName }: HeaderProps) {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="bg:flex bg:justify-between">
           <h1 className="text-xl font-bold text-blue-600">Portal de Conductor</h1>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 lg:hidden">
             Hola, <span className="font-medium">{userName}</span>
           </p>
         </div>
-        <Button
-          variant="outline"
-          className="flex items-center gap-2 text-gray-700 hover:text-blue-600 hover:border-blue-600"
-          onClick={handleLogout}
-        >
-          <LogOut size={18} />
-          <span>Cerrar sesión</span>
-        </Button>
+        <div className="flex flex-row items-center gap-4">
+        <p className="text-sm text-gray-600 hidden lg:block">
+            Hola, <span className="font-medium">{userName}</span>
+        </p>
+          <Button
+            variant="outline"
+            className="flex items-center gap-2 text-gray-700 hover:text-blue-600 hover:border-blue-600"
+            onClick={handleLogout}
+          >
+            <LogOut size={18} />
+            <span>Cerrar sesión</span>
+          </Button>
+        </div>
+
       </div>
     </header>
   )
