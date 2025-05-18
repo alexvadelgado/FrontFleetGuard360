@@ -4,15 +4,17 @@ import { useDriver } from "@/hooks/useDriver"
 import Header from "@/components/Header"
 import ProfileCard from "@/components/ProfileCard"
 import EditButton from "@/components/EditButton"
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   // En un caso real, el ID vendría de la autenticación o de parámetros de ruta
   const driverId = "DRV-2023-001"
   const { driver, loading, error } = useDriver(driverId)
+  const router = useRouter();
 
   const handleEditProfile = () => {
     console.log("Editar perfil")
-    // Implementar lógica para editar perfil
+    router.push("/editDriver");
   }
 
   if (loading) {

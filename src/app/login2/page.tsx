@@ -152,7 +152,7 @@ const Login = () => {
                     onChange={(e) => setVerificationCode(e.target.value)}
                  />
 
-                <div className="flex items-center justify-between gap-4 mt-6">
+                <div className="flex items-center flex-col justify-between gap-4 mt-6">
                   <Button
                     type="submit"
                     className="w-40 hover:bg-primary/80 transition-transform duration-200 hover:scale-105"
@@ -160,12 +160,15 @@ const Login = () => {
                   >
                     Ingresar
                   </Button>
+                </div>
+
+                <div className="flex items-start flex-col justify-between gap-4 mt-6">
                   <button
                     type="button"
-                    className="text-gray-500 hover:text-gray-700 hover:underline"
+                    className="block text-gray-500 text-5xl hover:text-gray-700 hover:underline"
                     onClick={() => setStep(1)}
                   >
-                    ← Atrás
+                    ←
                   </button>
                 </div>
               </form>
