@@ -7,16 +7,19 @@ import EditButton from "@/components/EditButton"
 import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
-  // En un caso real, el ID vendría de la autenticación o de parámetros de ruta
+  // Dado de ejemplo, el ID del conductor se establece manualmente
   const driverId = "DRV-2023-001"
   const { driver, loading, error } = useDriver(driverId)
   const router = useRouter();
 
+  // Función para manejar el clic en el botón de editar perfil
+  // En este caso, redirige a la página de edición de perfil
   const handleEditProfile = () => {
     console.log("Editar perfil")
     router.push("/editDriver");
   }
 
+  // Implementar lógica para editar perfil
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100">
@@ -30,6 +33,7 @@ export default function ProfilePage() {
     )
   }
 
+  // Si hay un error al cargar los datos del conductor, se muestra un mensaje de error
   if (error) {
     return (
       <div className="min-h-screen bg-gray-100">
@@ -42,15 +46,16 @@ export default function ProfilePage() {
       </div>
     )
   }
-
+  // Si no hay datos del conductor, no se muestra nada
   if (!driver) {
     return null
   }
 
+  // Si los datos del conductor están disponibles, se muestran en la tarjeta de perfil
+  // y se incluye el botón de editar perfil
   return (
     <div className="min-h-screen bg-gray-100">
-      <Header userName={driver.fullName} />
-
+      <Header userName={driver.fullName} role={driver.role} />
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <div className="flex flex-col">
@@ -59,8 +64,7 @@ export default function ProfilePage() {
                 Visualiza y actualiza tu información personal.
             </p>
           </div>
-        
-          <EditButton onClick={handleEditProfile} />
+          <EditButton onClick={handleEditProfile}/>
         </div>
         <ProfileCard driver={driver} />
       </div>

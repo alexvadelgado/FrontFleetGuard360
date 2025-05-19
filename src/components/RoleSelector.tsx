@@ -12,7 +12,7 @@ const RoleSelector: React.FC<RoleSelectorProps> = ({ selectedRole, onChange }) =
         <button
           type="button"
           onClick={() => onChange("admin")}
-          className={`font-bold flex-1 rounded-md py-2 px-4 text-center transition-all ${
+          className={`cursor-pointer font-bold flex-1 rounded-md py-2 px-4 text-center transition-all ${
             selectedRole === "admin"
               ? "bg-white text-black shadow-sm"
               : "text-gray-600 hover:text-gray-700"
@@ -23,7 +23,7 @@ const RoleSelector: React.FC<RoleSelectorProps> = ({ selectedRole, onChange }) =
         <button
           type="button"
           onClick={() => onChange("driver")}
-          className={`font-bold flex-1 rounded-md py-2 px-4 text-center transition-all ${
+          className={`cursor-pointer font-bold flex-1 rounded-md py-2 px-4 text-center transition-all ${
             selectedRole === "driver"
               ? "bg-white text-black shadow-sm"
               : "text-gray-600 hover:text-gray-700"

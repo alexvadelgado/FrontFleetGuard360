@@ -1,9 +1,9 @@
 "use client"
 
-import Login from "./login2/page"
+import Login from "./login/page"
 
 export default function Page() {
  return(
-  <Login />
+  <Login/>
  )
 }

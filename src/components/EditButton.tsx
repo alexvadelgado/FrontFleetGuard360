@@ -11,7 +11,7 @@ const EditButton = ({ onClick }: EditButtonProps) => {
     <Button 
       variant="outline"
       size="sm"
-      className="flex items-center gap-2 bg-white border border-gray-300 text-gray-800 rounded-full shadow-sm hover:bg-gray-50"
+      className="cursor-pointer flex items-center gap-2 bg-white border border-gray-300 text-gray-800 rounded-full shadow-sm hover:bg-gray-50 hover:text-primary hover:border-primary"
       onClick={onClick}
     >
       <Pencil className="h-4 w-4" />
