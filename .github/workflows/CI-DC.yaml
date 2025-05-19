@@ -15,6 +15,9 @@ jobs:
 
     if: github.ref == 'refs/heads/main' # Solo ejecutar en la rama principal
     steps:
+      - name: Checkout del código fuente
+        uses: actions/checkout@v3   # Usar la acción de verificación para obtener el código fuente
+
       - name: Installe Node.js 22.x # Instalar Node.js
         uses: actions/setup-node@v3 # Usar la acción de configuración de Node.js
         with:
@@ -37,7 +40,7 @@ jobs:
         with:
           node-version: 22.x # Especificar la versión de Node.js
       - name: Install vercel CLI # Instalar la CLI de Vercel
-        run: npm global add vercel # Ejecutar el comando de instalación global de npm para Vercel
+        run: npm install -g vercel # Ejecutar el comando de instalación global de npm para Vercel
       - name: Pull Vercel Environment Variables # Obtener las variables de entorno de Vercel
         run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }} # Ejecutar el comando de extracción de Vercel con el token de acceso
       - name: Deploy to Vercel # Desplegar en Vercel
