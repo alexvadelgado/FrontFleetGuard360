@@ -16,7 +16,7 @@ export default function AdminPage() {
   // En este caso, redirige a la página de edición de perfil
   const handleEditProfile = () => {
     console.log("Editar perfil")
-    router.push("/editDriver");
+    router.push("/agregar");
   }
 
   // Implementar lógica para editar perfil
