@@ -2,9 +2,6 @@
 
 import { useDriver } from "@/hooks/useDriver"
 import Header from "@/components/Header"
-import { useRouter } from "next/navigation";
-import { UserPlus } from "lucide-react";
-import DriversTable from "@/components/DriversTable";
 import { useState } from "react";
 
 export default function Agregar() {
