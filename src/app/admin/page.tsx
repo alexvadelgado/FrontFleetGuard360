@@ -1,25 +1,90 @@
-"use client"
+"use client";
 
-import { useDriver } from "@/hooks/useDriver"
-import Header from "@/components/Header"
+import { useEffect, useState } from "react";
+import { useDriver } from "@/hooks/useDriver";
+import Header from "@/components/Header";
 import { useRouter } from "next/navigation";
 import { UserPlus } from "lucide-react";
 import DriversTable from "@/components/DriversTable";
 
 export default function AdminPage() {
-  // Dado de ejemplo, el ID del conductor se establece manualmente
-  const driverId = "DRV-2023-001"
-  const { driver, loading, error } = useDriver(driverId)
+  const driverId = "DRV-2023-001";
+  const { driver, loading, error } = useDriver(driverId);
   const router = useRouter();
 
-  // Función para manejar el clic en el botón de editar perfil
-  // En este caso, redirige a la página de edición de perfil
-  const handleEditProfile = () => {
-    console.log("Editar perfil")
-    router.push("/editDriver");
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+      const refreshToken = localStorage.getItem("refreshToken");
+
+      // Si no hay accessToken, redirigir
+      if (!accessToken) {
+        router.push("/login");
+        return;
+      }
+
+      // Decodificamos el JWT para ver si está expirado
+      const payload = JSON.parse(atob(accessToken.split(".")[1]));
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      if (payload.exp < currentTime) {
+        // Token expirado, intentamos renovar con refreshToken
+        if (refreshToken) {
+          try {
+            const res = await fetch("https://backfleetguard360-10.onrender.com/api/auth/refresh", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ refreshToken }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+              localStorage.setItem("accessToken", data.accessToken);
+              localStorage.setItem("refreshToken", data.refreshToken);
+            } else {
+              // Falló el refresh
+              localStorage.clear();
+              router.push("/login");
+              return;
+            }
+          } catch (err) {
+            console.error("Error al renovar token:", err);
+            localStorage.clear();
+            router.push("/login");
+            return;
+          }
+        } else {
+          // No hay refreshToken, redirigimos
+          localStorage.clear();
+          router.push("/login");
+          return;
+        }
+      }
+
+      setCheckingAuth(false);
+    };
+
+    checkAuth();
+  }, [router]);
+
+  // Esperar a que se verifique la autenticación
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-600">
+        Verificando sesión...
+      </div>
+    );
   }
 
-  // Implementar lógica para editar perfil
+  const handleEditProfile = () => {
+    router.push("/editDriver");
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100">
@@ -30,10 +95,9 @@ export default function AdminPage() {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
-  // Si hay un error al cargar los datos del conductor, se muestra un mensaje de error
   if (error) {
     return (
       <div className="min-h-screen bg-gray-100">
@@ -44,15 +108,11 @@ export default function AdminPage() {
           </div>
         </div>
       </div>
-    )
-  }
-  // Si no hay datos del conductor, no se muestra nada
-  if (!driver) {
-    return null
+    );
   }
 
-  // Si los datos del conductor están disponibles, se muestran en la tarjeta de perfil
-  // y se incluye el botón de editar perfil
+  if (!driver) return null;
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Header userName={driver.fullName} role="Administrador" />
@@ -61,32 +121,30 @@ export default function AdminPage() {
           <div className="flex flex-col">
             <h2 className="text-2xl font-bold text-gray-800">Panel de administración</h2>
             <p className="text-sm text-gray-600 mb-4">
-                Gestiona la información de los conductores registrados en el sistema.
+              Gestiona la información de los conductores registrados en el sistema.
             </p>
           </div>
           <div className="hidden lg:block">
             <button
-              className="cursor-pointer  flex items-center gap-2 bg-primary hover:bg-primary/70 text-white px-4 py-2 rounded-md font-medium"
-            onClick={handleEditProfile}>
+              className="cursor-pointer flex items-center gap-2 bg-primary hover:bg-primary/70 text-white px-4 py-2 rounded-md font-medium"
+              onClick={handleEditProfile}
+            >
               Agregar empleado
               <UserPlus size={20} />
             </button>
           </div>
-
         </div>
-        <div>
-            <DriversTable/>
+        <DriversTable />
+        <div className="lg:hidden flex justify-center mb-6 p-4">
+          <button
+            className="cursor-pointer flex items-center gap-2 bg-primary hover:bg-primary/70 text-white px-4 py-2 rounded-md font-medium"
+            onClick={handleEditProfile}
+          >
+            Agregar empleado
+            <UserPlus size={20} />
+          </button>
         </div>
-        
-         <div className="lg:hidden flex justify-center mb-6 p-4">
-            <button
-              className="cursor-pointer  flex items-center gap-2 bg-primary hover:bg-primary/70 text-white px-4 py-2 rounded-md font-medium"
-            onClick={handleEditProfile}>
-              Agregar empleado
-              <UserPlus size={20} />
-            </button>
-          </div>
       </div>
     </div>
-  )
+  );
 }

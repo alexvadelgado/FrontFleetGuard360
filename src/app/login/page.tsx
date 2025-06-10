@@ -22,31 +22,51 @@ const Login = () => {
   }
 
   const handleInitialSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-    console.log("Enviando credenciales...", { email, password, role });
+      e.preventDefault();
+      setLoading(true);
+      setError("");
 
-    // Simulación de llamada a la API de login inicial
-    // Reemplaza esto con tu lógica real de llamada al backend
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simular espera de la API
+      try {
+        const res = await fetch("https://backfleetguard360-10.onrender.com/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: email, // o podrías tener username separado si lo deseas
+            password,
+          }),
+        });
 
-    const response = { success: true, requiresVerification: true }; // Simulación de respuesta del backend
+        const data = await res.json();
 
-    if (response.success && response.requiresVerification) {
-      setStep(2);
-      alert("Se ha enviado un código de verificación a tu correo electrónico.");
-    } else if (response.success) {
-      if (role === "admin") {
-        router.push("/admin");
-      } else if (role === "driver") {
-        router.push("/driver");
-      } // Redirigir directamente si no requiere verificación
-    } else {
-      setError("Credenciales incorrectas");
-    }
-    setLoading(false);
-  };
+        if (!res.ok) {
+          throw new Error(data.message || "Credenciales incorrectas");
+        }
+
+        // Guardar tokens en localStorage (o cookies seguras si usás SSR)
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem("userId", data.userId);
+
+        // Redirigir según rol
+        if (role === "admin") {
+          router.push("/admin");
+        } else {
+          router.push("/driver");
+        }
+      } catch (err: unknown) {
+        console.error("Login error", err);
+        if (err instanceof Error) {
+          setError(err.message || "Error en el login");
+        } else {
+          setError("Error en el login");
+        }
+      }
+
+      setLoading(false);
+    };
+
 
   const handleVerificationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,7 +118,7 @@ const Login = () => {
                   Correo electrónico:
                 </label>
                 <InputField
-                  type="email"
+                  type="text"
                   id="email"
                   placeholder="Ingresa tu usuario"
                   icon="email"
