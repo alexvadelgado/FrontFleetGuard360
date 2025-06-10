@@ -19,6 +19,8 @@ export default function ProfilePage() {
     router.push("/editDriver");
   }
 
+  
+
   // Implementar lógica para editar perfil
   if (loading) {
     return (
