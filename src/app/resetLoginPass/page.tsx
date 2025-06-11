@@ -17,28 +17,7 @@ const ResetPass = () => {
     e.preventDefault(); // Prevenir recarga del formulario
     setLoading(true);
 
-        /*try {
-            const response = await fetch("http://localhost:8080/auth/send-reset-code", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email }), // enviar { "email": "..." }
-            });
-
-            if (response.ok) {
-            const data = await response.text(); // o .json() si el backend responde JSON
-            alert(data); // muestra respuesta del backend
-            router.push("/login");
-            } else {
-            alert("Ocurrió un error al enviar el código.");
-            }
-        } catch (error) {
-            console.error("Error al conectar con el backend:", error);
-            alert("No se pudo conectar al servidor.");
-        } finally {
-            setLoading(false);
-        }*/
+        
        alert("Código enviado a " + email);
        router.push("/login");
     };

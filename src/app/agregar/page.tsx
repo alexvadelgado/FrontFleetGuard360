@@ -57,7 +57,7 @@ export default function Agregar() {
     
 
 
-    // const [isVisible, setIsVisible] = useState(false);
+    
     const [formData, setFormData] = useState({
         name: "",
         username: "",
@@ -290,7 +290,6 @@ export default function Agregar() {
                     </div>
                 </div>
             </div>
-            {/* {isVisible && <div className="p-4 bg-blue-100 rounded z-999">Este es el popup</div>} */}
         </div>
     );
 }
